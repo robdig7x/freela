@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+</head>
+<body>
+    <header th:fragment="header">
+    	Bem vindo ao sistema de Gerenciamento de Salas.
+    	<br /><hr />
+    </header>
+    
+    <div th:fragment="menu" class="scrollmenu">
+	  <a href="/index">Home</a>
+	  <a href="/sala">Cadastro de Salas</a>
+	  <a href="/pessoa">Cadastro de Pessoas</a>
+    </div>
+    
+    <footer th:fragment="footer">
+        <p>&copy; 2020 attacomsian.com</p>
+    </footer>
+</body>
+</html>

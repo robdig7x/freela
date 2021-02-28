@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<link th:href="@{/styles/cssandjs/styles.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <div th:insert="fragments/components :: menu"></div>
+    <br/>
+	
+	<div>
+		<form action="#" th:action="@{/pessoa/update/{id}(id=${person.id})}" 
+			th:object="${person}" method="post">
+			<label for="nome">Nome</label> 
+			<input type="text" th:field="*{nome}" id="nome" placeholder="Nome"> 
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span> 
+			
+			<label for="sobrenome">Sobrenome</label> 
+			<input type="text" th:field="*{sobrenome}" id="sobrenome" placeholder="Sobrenome">
+			<span th:if="${#fields.hasErrors('sobrenome')}" th:errors="*{sobrenome}"></span> 
+			<input type="submit" value="Atualizar">
+		</form>
+	</div>
+	
+</div>
+</body>
+</html>
+

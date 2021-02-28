@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<link th:href="@{/styles/cssandjs/styles.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <div th:insert="fragments/components :: menu"></div>
+    <br/>
+	
+	<div>
+		<form action="#" th:action="@{/sala/update/{id}(id=${sala.id})}" 
+			th:object="${sala}" method="post">
+			<label for="nome">Nome</label> 
+			<input disabled type="text" th:field="*{nome}" id="nome" placeholder="Nome"> 
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span> 
+			
+			<label for="tipo">Tipo</label> 
+			<select disabled name="tipo">
+			    <option th:each="tipo : ${T(com.prox.reservas.enums.TipoSala).values()}" 
+			        th:value="${tipo}" th:text="${tipo}"></option>
+			</select>
+			
+			<label for="lotacao">Lotação</label> 
+			<input disabled type="text" th:field="*{lotacao}" id="lotacao" placeholder="lotacao">
+			<span th:if="${#fields.hasErrors('lotacao')}" th:errors="*{locatacao}"></span>
+		</form>
+	</div>
+	
+	<br />
+	<br />
+	
+	<div th:switch="${persons}">
+    	<h2 th:case="null">Sem pessoas ainda!</h2>
+        <div th:case="*">
+            <h2>Pessoas da Sala</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                        <th>Esta na sala...</th>
+                    </tr>
+                </thead>
+                <tbody>
+	                <tr th:each="person : ${persons}">
+	        	        <span th:if="${person.estaNaSala}">
+		                    <td th:text="${person.nome}"></td>
+		                    <td th:text="${person.sobrenome}"></td>
+		                    <td th:if="${person.estaNaSala}"><span th:text="${person.sala.nome}"></span></td>
+		                    <td th:if="${person.estaNaSala}">
+			                    <form method="POST" th:action="@{/sala/manage/{acao}/{salaId}/pessoa/{pessoaId}(acao='R',salaId=${sala.id}, pessoaId=${person.id})}">
+						            <button type="submit" name="submit" value="value" class="link-button">Remover da Sala</button>
+						        </form>
+						    </td>
+						</span>
+	                </tr>
+	            </tbody>
+        	</table>
+    	</div>    
+	</div>	
+	
+	<div th:switch="${persons}">
+    	<h2 th:case="null">Sem pessoas ainda!</h2>
+        <div th:case="*">
+            <h2>Pessoas Disponiveis</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                    </tr>
+                </thead>
+                <tbody>
+	                <tr th:each="person : ${persons}">
+	                <span th:if="${!person.estaNaSala}">
+	                    <td th:text="${person.nome}"></td>
+	                    <td th:text="${person.sobrenome}"></td>
+	                    <td th:if="${!person.estaNaSala}">
+		                    <form method="POST" th:action="@{/sala/manage/{acao}/{salaId}/pessoa/{pessoaId}(acao='I',salaId=${sala.id}, pessoaId=${person.id})}">
+					            <button type="submit" name="submit" value="value" class="link-button">Incluir na Sala</button>
+					        </form>
+					    </td>
+	                </span>
+	                </tr>
+	            </tbody>
+        	</table>
+    	</div>    
+	</div>	
+</div>
+</body>
+</html>
+

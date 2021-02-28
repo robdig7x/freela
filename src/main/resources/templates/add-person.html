@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<link th:href="@{/styles/cssandjs/styles.css}" rel="stylesheet" />
+</head>
+<body>
+	
+    <div th:insert="fragments/components :: menu"></div>
+    <br/>
+    
+	<div>
+		<form action="#" th:action="@{/pessoa/add}"
+			th:object="${personDTO}" method="post">
+			<label for="nome">Nome</label> 
+			<input type="text" th:field="*{nome}" id="nome" placeholder="Nome"> 
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span> 
+			
+			<label for="sobrenome">Sobrenome</label> 
+			<input type="text" th:field="*{sobrenome}" id="sobrenome" placeholder="Sobrenome">
+			<span th:if="${#fields.hasErrors('sobrenome')}" th:errors="*{sobrenome}"></span> 
+			<input type="submit" value="Incluir">
+		</form>
+	</div>
+	
+	<div th:switch="${persons}">
+    	<h2 th:case="null">Sem pessoas ainda!</h2>
+        <div th:case="*">
+            <h2>Pessoas</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Sobrenome</th>
+                    </tr>
+                </thead>
+                <tbody>
+	                <tr th:each="person : ${persons}">
+	                    <td th:text="${person.nome}"></td>
+	                    <td th:text="${person.sobrenome}"></td>
+	                    <td><a th:href="@{/pessoa/edit/{id}(id=${person.id})}">Edit</a></td>
+	                    <td><a th:href="@{/pessoa/delete/{id}(id=${person.id})}">Delete</a></td>
+	                </tr>
+	            </tbody>
+        	</table>
+    	</div>    
+	</div>
+	
+</body>
+</html>
+

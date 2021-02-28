@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Insert title here</title>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+	<link th:href="@{/styles/cssandjs/styles.css}" rel="stylesheet" />
+</head>
+<body>
+
+    <div th:insert="fragments/components :: menu"></div>
+    <br/>
+	
+	<div>
+		<form action="#" th:action="@{/sala/update/{id}(id=${sala.id})}" 
+			th:object="${sala}" method="post">
+			<label for="nome">Nome</label> 
+			<input type="text" th:field="*{nome}" id="nome" placeholder="Nome"> 
+			<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span> 
+			
+			<label for="tipo">Tipo</label> 
+			<select name="tipo">
+			    <option th:each="tipo : ${T(com.prox.reservas.enums.TipoSala).values()}" 
+			        th:value="${tipo}" th:text="${tipo}"></option>
+			</select>
+			
+			<label for="lotacao">Lotação</label> 
+			<input type="text" th:field="*{lotacao}" id="lotacao" placeholder="lotacao">
+			<span th:if="${#fields.hasErrors('lotacao')}" th:errors="*{locatacao}"></span> 
+			<input type="submit" value="Atualizar">
+		</form>
+	</div>
+	
+</div>
+</body>
+</html>
+
