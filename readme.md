@@ -1,17 +1,3 @@
-Cadastro de pessoas com nome e sobrenome
-
-Cadastro das salas do evento, com nome e lotacao
-Cadstro do espacos de cafe com lotacao
-consulta de cada pessoa
-consulta de cada sala e espaco
-
-não funcional
-
-perssistencia de dados
-testes unitarios
-readme.md
-
-
 # Backend for Quotas System
 
 #Antes de se comprometer
