@@ -45,7 +45,7 @@ public class PersonDTO {
 		return persons.stream().map(PersonDTO::new).collect(Collectors.toList());
 	}
 	
-	public boolean estaNaSala() {
-		return this.sala != null;
+	public boolean estaNaSala(Long idSala) {
+		return this.sala != null && idSala != null && this.sala.getId().equals(idSala);
 	}
 }

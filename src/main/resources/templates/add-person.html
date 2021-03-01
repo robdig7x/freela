@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>Cadastro de Pessoas</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -25,25 +25,35 @@
 			<span th:if="${#fields.hasErrors('sobrenome')}" th:errors="*{sobrenome}"></span> 
 			<input type="submit" value="Incluir">
 		</form>
+		
+		<form action="#" th:action="@{/pessoa}">
+			Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+		    <input type="submit" value="Search" />
+		</form>
 	</div>
 	
 	<div th:switch="${persons}">
     	<h2 th:case="null">Sem pessoas ainda!</h2>
         <div th:case="*">
             <h2>Pessoas</h2>
-            <table>
+            
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Sobrenome</th>
+                        <th>Editar</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
 	                <tr th:each="person : ${persons}">
 	                    <td th:text="${person.nome}"></td>
 	                    <td th:text="${person.sobrenome}"></td>
-	                    <td><a th:href="@{/pessoa/edit/{id}(id=${person.id})}">Edit</a></td>
-	                    <td><a th:href="@{/pessoa/delete/{id}(id=${person.id})}">Delete</a></td>
+	                    <td><a th:href="@{/pessoa/edit/{id}(id=${person.id})}" class="btn btn-success">
+	                    	<i class="fas fa-user-edit"></i></a></td>
+	                    <td><a th:href="@{/pessoa/delete/{id}(id=${person.id})}" class="btn btn-danger">
+							<i class="fas fa-user-times ml-0"></i></a></td>
 	                </tr>
 	            </tbody>
         	</table>

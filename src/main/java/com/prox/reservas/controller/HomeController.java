@@ -21,7 +21,7 @@ public class HomeController {
 	
 	@GetMapping("/index")
 	public String showUserList(Model model) {
-		List<Sala> buscarTodasAsSalas = service.buscarTodas();
+		List<Sala> buscarTodasAsSalas = service.buscarTodas("");
 		model.addAttribute("salas", buscarTodasAsSalas.isEmpty() ? null : buscarTodasAsSalas);
 	    return "index";
 	}

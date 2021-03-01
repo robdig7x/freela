@@ -16,18 +16,23 @@
     <h2 th:case="null">Cadastre uma sala para continuar...</h2>
        <div th:case="*">
            <h2>Salas</h2>
-           <table>
+           <table class="table">
                <thead>
                    <tr>
                        <th>Nome</th>
+                       <th>Tipo</th>
                        <th>lotação</th>
+                       <th>Pessoas dentro da Sala</th>
+                       <th>Ação</th>
                    </tr>
                </thead>
                <tbody>
                 <tr th:each="sala : ${salas}">
                     <td th:text="${sala.nome}"></td>
+                    <td th:text="${sala.tipo}"></td>                    
                     <td th:text="${sala.lotacao}"></td>
-                    <td><a th:href="@{/sala/manage/{id}(id=${sala.id})}">Adicionar Pessoas</a></td>
+                    <td th:text="${sala.pessoas.size}"></td>
+                    <td><a th:href="@{/sala/manage/{id}(id=${sala.id})}">Gerenciar Sala</a></td>
                 </tr>
             </tbody>
        	</table>

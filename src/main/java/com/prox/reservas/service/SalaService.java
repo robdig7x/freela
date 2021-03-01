@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.prox.reservas.dto.SalaDTO;
 import com.prox.reservas.entities.Sala;
@@ -24,8 +25,10 @@ public class SalaService {
 		return repository.findById(id);
 	}
 	
-	public List<Sala> buscarTodas() {
+	public List<Sala> buscarTodas(String keyword) {
 		log.info("Buscando todas Salas cadastradas");
+		if (!ObjectUtils.isEmpty(keyword))
+			return repository.findByNomeContainingIgnoreCase(keyword);
 		return repository.findAll();
 	}
 	

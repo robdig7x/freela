@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.prox.reservas.dto.PersonDTO;
 import com.prox.reservas.entities.Person;
@@ -18,18 +19,15 @@ import lombok.extern.slf4j.Slf4j;
 public class PersonService {
 	private final PersonRepository repository;
 	
-	public Optional<Person> buscaPessoaPorNome(String nome) {
-		log.info("Buscando pelo nome {}", nome);
-		return Optional.of(repository.findByNome(nome));
-	}
-	
 	public Optional<Person> buscaPessoaPorId(Long id) {
 		log.info("Buscando por ID: {}", id);
 		return repository.findById(id);
 	}
 	
-	public List<Person> buscarTodas() {
+	public List<Person> buscarTodas(String nome) {
 		log.info("Buscando todas Pessoas cadastradas");
+		if (!ObjectUtils.isEmpty(nome))
+			return repository.findByNomeContainingIgnoreCase(nome);
 		return repository.findAll();
 	}
 	

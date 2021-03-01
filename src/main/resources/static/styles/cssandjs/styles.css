@@ -15,3 +15,7 @@
 .scrollmenu a:hover {
   background-color: #777;
 }
+
+.fa-user-edit {
+	font-size: 16px
+}

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>Cadastro de Salas</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -31,18 +31,24 @@
 			<span th:if="${#fields.hasErrors('lotacao')}" th:errors="*{lotacao}"></span> 
 			<input type="submit" value="Incluir">
 		</form>
+		<form action="#" th:action="@{/sala}">
+			Filter: <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" required />
+		    <input type="submit" value="Search" />
+		</form>
 	</div>
 	
 	<div th:switch="${salas}">
     <h2 th:case="null">Sem salas ainda!</h2>
         <div th:case="*">
             <h2>Salas</h2>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Tipo</th>
                         <th>lotação</th>
+                        <th>Editar</th>
+                        <th>Excluir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,8 +56,10 @@
 	                    <td th:text="${sala.nome}"></td>
 	                    <td th:text="${sala.tipo}"></td>
 	                    <td th:text="${sala.lotacao}"></td>
-	                    <td><a th:href="@{/sala/edit/{id}(id=${sala.id})}">Edit</a></td>
-	                    <td><a th:href="@{/sala/delete/{id}(id=${sala.id})}">Delete</a></td>
+	                    <td><a th:href="@{/sala/edit/{id}(id=${sala.id})}" class="btn btn-success">
+	                    	<i class="fas fa-user-edit ml-0"></i></a></td>
+	                    <td><a th:href="@{/sala/delete/{id}(id=${sala.id})}" class="btn btn-danger">
+							<i class="fas fa-user-times ml-0"></i></a></td>
 	                </tr>
 	            </tbody>
         	</table>

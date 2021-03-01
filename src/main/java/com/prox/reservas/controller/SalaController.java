@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ObjectUtils;
@@ -36,9 +37,10 @@ public class SalaController {
 	private final PersonService personService;
 	
 	@GetMapping
-	public String showSignupForm(SalaDTO sala, Model model) {
-		List<SalaDTO> listaDeSalas = SalaDTO.converter(salaService.buscarTodas());
+	public String showSignupForm(@Param("keyword") String keyword, SalaDTO sala, Model model) {
+		List<SalaDTO> listaDeSalas = SalaDTO.converter(salaService.buscarTodas(keyword));
 		model.addAttribute("salas", listaDeSalas.isEmpty() ? null : listaDeSalas);
+		model.addAttribute("keyword", keyword);	
 		return "add-sala";
 	}
 	
@@ -56,7 +58,7 @@ public class SalaController {
 		Sala sala = salaService.buscaSalaPorId(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
 		
-		List<PersonDTO> listaDePessoas = PersonDTO.converter(personService.buscarTodas());
+		List<PersonDTO> listaDePessoas = PersonDTO.converter(personService.buscarTodas(""));
 		model.addAttribute("persons", listaDePessoas.isEmpty() ? null : listaDePessoas);
 
 		model.addAttribute("sala", new SalaDTO(sala));

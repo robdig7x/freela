@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Insert title here</title>
+<title>Gerenciar Sala</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
@@ -39,23 +39,25 @@
     	<h2 th:case="null">Sem pessoas ainda!</h2>
         <div th:case="*">
             <h2>Pessoas da Sala</h2>
-            <table>
+            <br /><br />
+            <table th:if="${not #lists.isEmpty(persons)}" class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Sobrenome</th>
                         <th>Esta na sala...</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody>
 	                <tr th:each="person : ${persons}">
-	        	        <span th:if="${person.estaNaSala}">
+	        	        <span th:if="${person.estaNaSala(sala.id)}">
 		                    <td th:text="${person.nome}"></td>
 		                    <td th:text="${person.sobrenome}"></td>
-		                    <td th:if="${person.estaNaSala}"><span th:text="${person.sala.nome}"></span></td>
-		                    <td th:if="${person.estaNaSala}">
+		                    <td th:if="${person.estaNaSala(sala.id)}"><span th:text="${person.sala.nome}"></span></td>
+		                    <td th:if="${person.estaNaSala(sala.id)}">
 			                    <form method="POST" th:action="@{/sala/manage/{acao}/{salaId}/pessoa/{pessoaId}(acao='R',salaId=${sala.id}, pessoaId=${person.id})}">
-						            <button type="submit" name="submit" value="value" class="link-button">Remover da Sala</button>
+						            <button type="submit" name="submit" value="value" class="btn btn-danger"><i class="fas fa-user-minus"></i></button>
 						        </form>
 						    </td>
 						</span>
@@ -66,24 +68,30 @@
 	</div>	
 	
 	<div th:switch="${persons}">
-    	<h2 th:case="null">Sem pessoas ainda!</h2>
+    	<h2 th:case="null"></h2>
         <div th:case="*">
             <h2>Pessoas Disponiveis</h2>
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Sobrenome</th>
+                        <th>Esta na sala...</th>
+                        <th>Ação</th>
                     </tr>
                 </thead>
                 <tbody>
 	                <tr th:each="person : ${persons}">
-	                <span th:if="${!person.estaNaSala}">
+	                <span th:if="${!person.estaNaSala(sala.id)}">
 	                    <td th:text="${person.nome}"></td>
 	                    <td th:text="${person.sobrenome}"></td>
-	                    <td th:if="${!person.estaNaSala}">
+	                    <td>
+	                    	<span th:if="${person.sala != null}" th:text="${person.sala.nome}">
+	                    	</span>
+	                    </td>
+	                    <td th:if="${!person.estaNaSala(sala.id)}">
 		                    <form method="POST" th:action="@{/sala/manage/{acao}/{salaId}/pessoa/{pessoaId}(acao='I',salaId=${sala.id}, pessoaId=${person.id})}">
-					            <button type="submit" name="submit" value="value" class="link-button">Incluir na Sala</button>
+					            <button type="submit" name="submit" value="value" class="btn btn-success"><i class="fas fa-user-plus"></i></button>
 					        </form>
 					    </td>
 	                </span>
