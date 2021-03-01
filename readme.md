@@ -34,4 +34,5 @@ Antes de confirmar o código, certifique-se de README.md está atualizado.
 # Instalação
 
 - Instalar STS Spring + Java 11.
+- Ou Via Maven: `$ mvn spring-boot:run`
 - acessar a URL: http://localhost:8082
