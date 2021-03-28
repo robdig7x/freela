@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.prox.reservas.entities.Sala;
+import com.prox.reservas.dto.SalaDTO;
 import com.prox.reservas.service.SalaService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class HomeController {
 	
 	@GetMapping("/index")
 	public String showUserList(Model model) {
-		List<Sala> buscarTodasAsSalas = service.buscarTodas("");
+		List<SalaDTO> buscarTodasAsSalas = service.buscarTodas("");
 		model.addAttribute("salas", buscarTodasAsSalas.isEmpty() ? null : buscarTodasAsSalas);
 	    return "index";
 	}

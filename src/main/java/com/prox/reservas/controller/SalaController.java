@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.prox.reservas.dto.PersonDTO;
 import com.prox.reservas.dto.SalaDTO;
-import com.prox.reservas.entities.Person;
-import com.prox.reservas.entities.Sala;
 import com.prox.reservas.service.PersonService;
 import com.prox.reservas.service.SalaService;
 
@@ -38,7 +36,7 @@ public class SalaController {
 	
 	@GetMapping
 	public String showSignupForm(@Param("keyword") String keyword, SalaDTO sala, Model model) {
-		List<SalaDTO> listaDeSalas = SalaDTO.converter(salaService.buscarTodas(keyword));
+		List<SalaDTO> listaDeSalas = salaService.buscarTodas(keyword);
 		model.addAttribute("salas", listaDeSalas.isEmpty() ? null : listaDeSalas);
 		model.addAttribute("keyword", keyword);	
 		return "add-sala";
@@ -46,30 +44,30 @@ public class SalaController {
 	
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") Long id, Model model) {
-		Sala sala = salaService.buscaSalaPorId(id)
+		SalaDTO sala = salaService.buscaSalaPorId(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
 		
-		model.addAttribute("sala", new SalaDTO(sala));
+		model.addAttribute("sala", sala);
 		return "update-sala";
 	}
 	
 	@GetMapping("/manage/{id}")
 	public String showManageForm(@PathVariable("id") Long id, Model model) {
-		Sala sala = salaService.buscaSalaPorId(id)
+		SalaDTO sala = salaService.buscaSalaPorId(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
 		
-		List<PersonDTO> listaDePessoas = PersonDTO.converter(personService.buscarTodas(""));
+		List<PersonDTO> listaDePessoas = personService.buscarTodas("");
 		model.addAttribute("persons", listaDePessoas.isEmpty() ? null : listaDePessoas);
 
-		model.addAttribute("sala", new SalaDTO(sala));
+		model.addAttribute("sala", sala);
 		return "manage-sala";
 	}
 	
 	@PostMapping("/manage/{acao}/{idSala}/pessoa/{idPessoa}")
 	public String showManageForm(@PathVariable("idSala") Long idSala, @PathVariable("idPessoa") Long idPessoa, @PathVariable("acao") String acao, Model model) {
-		Sala sala = salaService.buscaSalaPorId(idSala)
+		SalaDTO sala = salaService.buscaSalaPorId(idSala)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + idSala));
-		Person person = personService.buscaPessoaPorId(idPessoa)
+		PersonDTO person = personService.buscaPessoaPorId(idPessoa)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + idPessoa));
 		
 		if (ObjectUtils.isEmpty(acao))
@@ -84,15 +82,15 @@ public class SalaController {
 		} else {
 			throw new IllegalArgumentException("Acao parameter não informado");
 		}
-		salaService.salvarSala(new SalaDTO(sala));
-		personService.salvarPessoa(new PersonDTO(person));
+		salaService.save(sala);
+		personService.salvarPessoa(person);
 		return "redirect:/sala/manage/".concat(idSala.toString());
 	}
 
 	@PostMapping("/add")
 	@Transactional
 	public String addSala(@Valid SalaDTO salaDTO) {
-		salaService.salvarSala(salaDTO);
+		salaService.save(salaDTO);
 		return REDIRECT_SIGNUP;
 	}
 	
@@ -101,16 +99,16 @@ public class SalaController {
 	    if (result.hasErrors()) {
 	        return "update-sala";
 	    }
-	    salaService.salvarSala(salaDTO);
+	    salaService.save(salaDTO);
 	    return REDIRECT_SIGNUP;
 	}
 	    
 	@GetMapping("/delete/{id}")
 	public String deleteUser(@PathVariable("id") Long id) {
-		Sala sala = salaService.buscaSalaPorId(id)
+		SalaDTO sala = salaService.buscaSalaPorId(id)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
 		salaService.delete(sala);
-	    log.info("Pessoa deletada: {}", new SalaDTO(sala));
+	    log.info("Pessoa deletada: {}", sala);
 	    return REDIRECT_SIGNUP;
 	}
 }

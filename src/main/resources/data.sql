@@ -1,1 +1,0 @@
-INSERT INTO PERSON(nome, sobrenome) VALUES('Robson', 'Diego');
