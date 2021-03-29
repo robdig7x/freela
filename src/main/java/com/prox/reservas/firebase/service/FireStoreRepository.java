@@ -60,13 +60,11 @@ public interface FireStoreRepository<T> {
 		CollectionReference collection = dbFireStore.collection(getNameCollectionForActualClass());
 		DocumentReference documentWithIdOrElse;
 		
-		Object newId = null;
-		Map<String, Object> obtainIdFromData = obtainIdFromData(data);
-		Object idValue = obtainIdFromData.get(ID);
-		boolean possuiID = obtainIdFromData.containsKey(ID);
+		String newId = null;
+		Map<String, String> idFromData = obtainIdFromData(data);
+		String idValue = idFromData.get(ID);
 
-		//Objeto possui Campo ID?
-		if (possuiID) {
+		if (idFromData.containsKey(ID)) {
 			if (Objects.isNull(idValue)) {
 				final DocumentReference document = collection.document("--stats--");
 				document.set(Map.of("count", FieldValue.increment(1)), SetOptions.merge()).get();
@@ -79,7 +77,7 @@ public interface FireStoreRepository<T> {
 				if (statsCollecttion.exists()) {
 					log.info("Recuperando ID = {}", statsCollecttion.getData());
 					try {
-						newId = (getParametizadeClass().getDeclaredField(ID).getType()).cast(statsCollecttion.getData().get("count"));
+						newId = ((Long) statsCollecttion.getData().get("count")).toString();
 						Field field = getParametizadeClass().getDeclaredField(ID);
 						field.setAccessible(true);
 						field.set(data, newId);
@@ -90,7 +88,7 @@ public interface FireStoreRepository<T> {
 			} else {
 				newId = idValue;
 			}
-			documentWithIdOrElse = collection.document(String.valueOf(newId));
+			documentWithIdOrElse = collection.document(newId);
 		} else {
 			documentWithIdOrElse = collection.document();
 		}
@@ -102,13 +100,12 @@ public interface FireStoreRepository<T> {
 		
 	}
 	
-	default Map<String, Object> obtainIdFromData(T data) {
-		Map<String, Object> id = new HashMap<>(); 
+	default Map<String, String> obtainIdFromData(T data) {
+		Map<String, String> id = new HashMap<>(); 
 		try {
 			Field field = getParametizadeClass().getDeclaredField(ID);
 			field.setAccessible(true);
-			Long idValue = (Long) field.get(data);
-			id.put(ID, idValue);
+			id.put(ID, (String) field.get(data));
 		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
 			log.error("ID não encontrado para o Obj {}", data);
 		}
@@ -141,9 +138,9 @@ public interface FireStoreRepository<T> {
 		return Optional.empty();
 	}
 
-	default void deleteById(Long id) {
+	default void deleteById(String id) {
 		try {
-			dbFireStore.collection(getNameCollectionForActualClass()).document(id.toString()).delete().get();
+			dbFireStore.collection(getNameCollectionForActualClass()).document(id).delete().get();
 		} catch (InterruptedException | ExecutionException e) {
 			log.warn("Interrupted!", e);
 		    Thread.currentThread().interrupt();
@@ -160,9 +157,8 @@ public interface FireStoreRepository<T> {
 	}
 	
 	default void delete(T data) {
-		Map<String, Object> dataId = obtainIdFromData(data);
-		Long id = (Long) dataId.get(ID);
-		deleteById(id);
+		Map<String, String> dataId = obtainIdFromData(data);
+		deleteById(dataId.get(ID));
 	}
 
 	@SuppressWarnings("unchecked")

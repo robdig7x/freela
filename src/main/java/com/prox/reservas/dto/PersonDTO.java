@@ -7,15 +7,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PersonDTO {
 	
-	private Long id;
+	private String id;
 	
 	private String nome;
 	
-	private SalaDTO sala;
+	private String salaId;
 	
 	private String sobrenome;
 		
-	public boolean estaNaSala(Long idSala) {
-		return this.sala != null && idSala != null && this.sala.getId().equals(idSala);
+	public boolean estaNaSala(String idSala) {
+		return this.salaId != null && idSala != null && this.salaId.equals(idSala);
 	}
 }

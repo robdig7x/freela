@@ -54,7 +54,7 @@
 	        	        <span th:if="${person.estaNaSala(sala.id)}">
 		                    <td th:text="${person.nome}"></td>
 		                    <td th:text="${person.sobrenome}"></td>
-		                    <td th:if="${person.estaNaSala(sala.id)}"><span th:text="${person.sala.nome}"></span></td>
+		                    <td th:if="${person.estaNaSala(sala.id)}"><span th:text="${person.salaId}"></span></td>
 		                    <td th:if="${person.estaNaSala(sala.id)}">
 			                    <form method="POST" th:action="@{/sala/manage/{acao}/{salaId}/pessoa/{pessoaId}(acao='R',salaId=${sala.id}, pessoaId=${person.id})}">
 						            <button type="submit" name="submit" value="value" class="btn btn-danger"><i class="fas fa-user-minus"></i></button>
@@ -86,7 +86,7 @@
 	                    <td th:text="${person.nome}"></td>
 	                    <td th:text="${person.sobrenome}"></td>
 	                    <td>
-	                    	<span th:if="${person.sala != null}" th:text="${person.sala.nome}">
+	                    	<span th:if="${person.salaId != null}" th:text="${person.salaId}">
 	                    	</span>
 	                    </td>
 	                    <td th:if="${!person.estaNaSala(sala.id)}">

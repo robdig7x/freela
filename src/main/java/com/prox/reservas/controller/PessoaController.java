@@ -66,7 +66,7 @@ public class PessoaController {
 	        return REDIRECT_PERSON;
 	    }
 	    
-	    personDTO.setId(id);
+	    personDTO.setId(id.toString());
 	    service.salvarPessoa(personDTO);
 	    return REDIRECT_PERSON;
 	}

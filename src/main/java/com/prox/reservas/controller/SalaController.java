@@ -73,12 +73,13 @@ public class SalaController {
 		if (ObjectUtils.isEmpty(acao))
 			throw new IllegalArgumentException("Acao parameter não informado");
 		
-		if ("R".equalsIgnoreCase(acao) && person.getSala().getId().equals(idSala)) {
+		if ("R".equalsIgnoreCase(acao) && person.getSalaId().equals(idSala.toString())) {
 			sala.getPessoas().remove(person);
-			person.setSala(null);
-		} else if ("I".equalsIgnoreCase(acao)) {
-			person.setSala(sala);
+			person.setSalaId(null);
+		} else 
+		if ("I".equalsIgnoreCase(acao)) {
 			sala.getPessoas().add(person);
+			person.setSalaId(sala.getId());
 		} else {
 			throw new IllegalArgumentException("Acao parameter não informado");
 		}

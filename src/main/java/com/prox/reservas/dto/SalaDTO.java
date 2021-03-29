@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SalaDTO {
 	
-	private Long id;
+	private String id;
 	private String nome;
 	private int lotacao;
 	private TipoSala tipo;
