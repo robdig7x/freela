@@ -1,10 +1,11 @@
 package com.prox.reservas.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,9 +26,12 @@ public class SalaFirestoreController {
 	
 	@PostMapping
 	@Transactional
-	public String addSala(@Valid @RequestBody SalaDTO salaDTO) {
+	public ResponseEntity<SalaDTO> addSala(@RequestBody SalaDTO salaDTO) {
 		salaService.save(salaDTO);
-		return "testOK";
+		return ResponseEntity
+	            .created(URI
+	                     .create(String.format("/sala/%s", salaDTO.getId())))
+	            .body(salaDTO);
 	}
 	
 	@GetMapping

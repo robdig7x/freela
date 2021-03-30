@@ -25,9 +25,14 @@
 			<span th:if="${#fields.hasErrors('sobrenome')}" th:errors="*{sobrenome}"></span> 
 			
 			<label for="sala">Sala</label> 
-			<select name="sala">
-			    <option id="sala" th:selected="${sala.id}" th:each="sala : ${todasSalas}" 
-			        th:value="${sala.id}" th:text="${sala.nome}"></option>
+			<select id="salaId" name="salaId">
+				<option></option>
+			    <option id="sala" 
+			    	th:selected="${person.salaId == sala.id}" 
+			    	th:each="sala : ${todasSalas}" 
+			        th:value="${sala.id}" 
+			        th:text="${sala.nome}"
+				/>
 			</select>
 			
 			<input type="submit" value="Atualizar">

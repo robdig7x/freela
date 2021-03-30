@@ -29,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SalaController {
 	
+	private static final String MSG_INVALID_SALA_ID = "Invalid sala Id:";
+
 	private static final String REDIRECT_SIGNUP = "redirect:/sala";
 	
 	private final SalaService salaService;
@@ -45,7 +47,7 @@ public class SalaController {
 	@GetMapping("/edit/{id}")
 	public String showUpdateForm(@PathVariable("id") Long id, Model model) {
 		SalaDTO sala = salaService.buscaSalaPorId(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException(MSG_INVALID_SALA_ID + id));
 		
 		model.addAttribute("sala", sala);
 		return "update-sala";
@@ -54,7 +56,7 @@ public class SalaController {
 	@GetMapping("/manage/{id}")
 	public String showManageForm(@PathVariable("id") Long id, Model model) {
 		SalaDTO sala = salaService.buscaSalaPorId(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException(MSG_INVALID_SALA_ID + id));
 		
 		List<PersonDTO> listaDePessoas = personService.buscarTodas("");
 		model.addAttribute("persons", listaDePessoas.isEmpty() ? null : listaDePessoas);
@@ -66,7 +68,7 @@ public class SalaController {
 	@PostMapping("/manage/{acao}/{idSala}/pessoa/{idPessoa}")
 	public String showManageForm(@PathVariable("idSala") Long idSala, @PathVariable("idPessoa") Long idPessoa, @PathVariable("acao") String acao, Model model) {
 		SalaDTO sala = salaService.buscaSalaPorId(idSala)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + idSala));
+				.orElseThrow(() -> new IllegalArgumentException(MSG_INVALID_SALA_ID + idSala));
 		PersonDTO person = personService.buscaPessoaPorId(idPessoa)
 				.orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + idPessoa));
 		
@@ -74,11 +76,9 @@ public class SalaController {
 			throw new IllegalArgumentException("Acao parameter não informado");
 		
 		if ("R".equalsIgnoreCase(acao) && person.getSalaId().equals(idSala.toString())) {
-			sala.getPessoas().remove(person);
 			person.setSalaId(null);
 		} else 
 		if ("I".equalsIgnoreCase(acao)) {
-			sala.getPessoas().add(person);
 			person.setSalaId(sala.getId());
 		} else {
 			throw new IllegalArgumentException("Acao parameter não informado");
@@ -107,7 +107,7 @@ public class SalaController {
 	@GetMapping("/delete/{id}")
 	public String deleteUser(@PathVariable("id") Long id) {
 		SalaDTO sala = salaService.buscaSalaPorId(id)
-				.orElseThrow(() -> new IllegalArgumentException("Invalid sala Id:" + id));
+				.orElseThrow(() -> new IllegalArgumentException(MSG_INVALID_SALA_ID + id));
 		salaService.delete(sala);
 	    log.info("Pessoa deletada: {}", sala);
 	    return REDIRECT_SIGNUP;

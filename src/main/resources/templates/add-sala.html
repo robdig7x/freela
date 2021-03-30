@@ -39,6 +39,10 @@
 	
 	<div th:switch="${salas}">
     <h2 th:case="null">Sem salas ainda!</h2>
+    
+    	
+    
+    
         <div th:case="*">
             <h2>Salas</h2>
             <table class="table">
@@ -46,7 +50,8 @@
                     <tr>
                         <th>Nome</th>
                         <th>Tipo</th>
-                        <th>lotação</th>
+                        <th>Lotação</th>
+                        <th>Gerenciar</th>
                         <th>Editar</th>
                         <th>Excluir</th>
                     </tr>
@@ -56,6 +61,9 @@
 	                    <td th:text="${sala.nome}"></td>
 	                    <td th:text="${sala.tipo}"></td>
 	                    <td th:text="${sala.lotacao}"></td>
+	                    <td><a th:href="@{/sala/manage/{id}(id=${sala.id})}" class="btn btn-info">
+	                    	<i class="fas fa-wrench"></i></a>
+	                    </td>
 	                    <td><a th:href="@{/sala/edit/{id}(id=${sala.id})}" class="btn btn-success">
 	                    	<i class="fas fa-user-edit ml-0"></i></a></td>
 	                    <td><a th:href="@{/sala/delete/{id}(id=${sala.id})}" class="btn btn-danger">
