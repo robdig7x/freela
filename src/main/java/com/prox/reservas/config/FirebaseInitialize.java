@@ -18,7 +18,7 @@ public class FirebaseInitialize {
 		try (FileInputStream serviceAccount = new FileInputStream("./serviceaccount.json")) {
 			FirebaseOptions options = FirebaseOptions.builder()
 					.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-					.setDatabaseUrl("https://api-reservas-3965f.firebaseio.com").build();
+					.setDatabaseUrl("https://api-reservas-3965f-default-rtdb.firebaseio.com").build();
 			FirebaseApp.initializeApp(options);
 		} catch (Exception e) {
 			e.printStackTrace();
