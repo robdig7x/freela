@@ -6,5 +6,5 @@ import com.prox.reservas.dto.SalaDTO;
 import com.prox.reservas.firebase.service.FireStoreRepository;
 
 @Repository
-public class SalaRepository implements FireStoreRepository<SalaDTO>{
+public class SalaRepository implements FireStoreRepository<SalaDTO> {
 }

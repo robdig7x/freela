@@ -6,5 +6,5 @@ import com.prox.reservas.dto.PersonDTO;
 import com.prox.reservas.firebase.service.FireStoreRepository;
 
 @Repository
-public class PessoaRepository implements FireStoreRepository<PersonDTO>{
+public class PessoaRepository implements FireStoreRepository<PersonDTO> {
 }

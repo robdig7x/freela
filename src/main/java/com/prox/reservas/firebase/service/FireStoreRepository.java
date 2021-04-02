@@ -27,12 +27,23 @@ import com.google.cloud.firestore.SetOptions;
 import com.google.cloud.firestore.WriteResult;
 import com.google.firebase.cloud.FirestoreClient;
 
+
+/** @see
+ * 
+ * @author diego
+ *
+ * https://firebase.google.com/docs/firestore/query-data/get-data?hl=pt-br
+ */
 @NoRepositoryBean
 public interface FireStoreRepository<T> {
 	
 	static final String ID = "id";
 	final Firestore dbFireStore = FirestoreClient.getFirestore();
 	final Logger log = LoggerFactory.getLogger(FireStoreRepository.class);
+		
+	default void saveAll(List<T> entity) {}
+	default void deleteAll(List<T> datas) {}
+	default void deleteAll() {}
 	
 	default List<T> findAll() {
 		ApiFuture<QuerySnapshot> future = dbFireStore.collection(getNameCollectionForActualClass()).get();
@@ -100,19 +111,6 @@ public interface FireStoreRepository<T> {
 		
 	}
 	
-	default Map<String, String> obtainIdFromData(T data) {
-		Map<String, String> id = new HashMap<>(); 
-		try {
-			Field field = getParametizadeClass().getDeclaredField(ID);
-			field.setAccessible(true);
-			id.put(ID, (String) field.get(data));
-		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
-			log.error("ID não encontrado para o Obj {}", data);
-		}
-		
-		return id;
-	}
-
 	default Optional<T> findById(Long id) {
 		
 		String collection = getNameCollectionForActualClass();
@@ -175,15 +173,24 @@ public interface FireStoreRepository<T> {
 	}
 	
 	default String getNameCollectionForActualClass() {
-		String collection = getParametizadeClass().getSimpleName().toLowerCase();
-		while (true) {
-			if (collection.endsWith("dto")) {
-				collection = collection.replace("dto", "");
-			} else {
-				break;
-			}
+		String collectionName = getParametizadeClass().getSimpleName().toLowerCase();
+		while (collectionName.endsWith("dto")) {
+			collectionName = collectionName.replace("dto", "");
 		}
-		return collection;
+		return collectionName;
+	}
+	
+	default Map<String, String> obtainIdFromData(T data) {
+		Map<String, String> id = new HashMap<>(); 
+		try {
+			Field field = getParametizadeClass().getDeclaredField(ID);
+			field.setAccessible(true);
+			id.put(ID, (String) field.get(data));
+		} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e1) {
+			log.error("ID não encontrado para o Obj {}", data);
+		}
+		
+		return id;
 	}
 
 }
