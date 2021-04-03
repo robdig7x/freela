@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class PersonService {
+	
 	private final PessoaRepository repository;
 	
 	public Optional<PersonDTO> buscaPessoaPorId(Long id) {
